@@ -2,11 +2,22 @@
 
 A real, replayable arcade game — with Isaac as the mole. Built to send to your brother.
 
+## Put Isaac's actual face on the moles (recommended)
+
+The game can use a real photo of Isaac for the pop-up heads. To bake one in:
+
+1. Open **`WhackAIsaac.html`** in a browser (just double-click it).
+2. On the start screen click **📷 Add Isaac's photo** and pick his picture. It auto-crops to a circle and shrinks it.
+3. Click **⬇️ Download ready-to-send file**. This produces **`WhackAIsaac-ready.html`** with his face baked right in.
+4. Send **`WhackAIsaac-ready.html`** to Isaac. It's a single self-contained file — works offline, no install.
+
+No photo? You can send `WhackAIsaac.html` as-is and it falls back to a cartoon Isaac.
+
 ## How to use it
 
-1. Send your brother **`WhackAIsaac.html`** (text, email, AirDrop — whatever).
+1. Send your brother the file (text, email, AirDrop — whatever).
 2. He double-clicks it. It opens in any web browser. No install, no internet needed.
-3. He gets hooked and (gently) roasted.
+3. He gets hooked and (gently) roasted — by his own face.
 
 ## How to play
 

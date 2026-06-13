@@ -22,7 +22,6 @@
   }
   .tagline { opacity: .85; font-size: clamp(13px, 2.4vw, 17px); margin-bottom: 10px; }
 
-  /* HUD */
   #hud {
     display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
     margin-bottom: 12px; width: 100%; max-width: 560px;
@@ -41,7 +40,6 @@
   #timeBar { height: 100%; width: 100%; border-radius: 999px;
     background: linear-gradient(90deg, #4be38b, #ffe066, #ff6b6b); transition: width .25s linear; }
 
-  /* Board */
   #board {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px, 2.5vw, 18px);
     width: min(560px, 94vw); aspect-ratio: 1 / 1; position: relative;
@@ -53,32 +51,47 @@
     overflow: hidden; display: flex; align-items: flex-end; justify-content: center;
     cursor: pointer;
   }
-  .hole::after { /* dirt rim */
+  .hole::after {
     content: ""; position: absolute; left: -4%; right: -4%; bottom: -6%; height: 38%;
     background: radial-gradient(ellipse at 50% 0%, #6b4a22, #3a2510 80%);
     border-radius: 50%; z-index: 3; pointer-events: none;
   }
   .critter {
-    position: absolute; bottom: 0; width: 78%; aspect-ratio: 1/1;
+    position: absolute; bottom: 0; width: 80%; aspect-ratio: 1/1;
     transform: translateY(110%); transition: transform .14s cubic-bezier(.2,1.4,.5,1);
-    z-index: 2; will-change: transform;
+    z-index: 2; will-change: transform; display: flex; align-items: flex-end; justify-content: center;
   }
-  .critter.up { transform: translateY(14%); }
-  .critter.whacked { transform: translateY(60%) scaleY(.55) scaleX(1.15); transition: transform .08s; }
+  .critter.up { transform: translateY(12%); }
+  .critter.whacked { transform: translateY(58%) scaleY(.55) scaleX(1.15); transition: transform .08s; }
   .critter svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 4px 6px rgba(0,0,0,.4)); }
 
-  /* floating score popups */
+  /* photo-based head */
+  .head { position: relative; width: 92%; }
+  .head .shirt {
+    position: absolute; left: 50%; bottom: -6%; transform: translateX(-50%);
+    width: 86%; height: 46%; border-radius: 44% 44% 18% 18%; z-index: 1;
+  }
+  .head .pic {
+    position: relative; z-index: 2; width: 100%; aspect-ratio: 1/1; border-radius: 50%;
+    object-fit: cover; border: 4px solid #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,.45); display: block;
+  }
+  .head.gold .pic { border-color: #ffe066; box-shadow: 0 0 14px #ffd700, 0 4px 8px rgba(0,0,0,.45); }
+  .head .crown {
+    position: absolute; z-index: 3; top: -16%; left: 50%; transform: translateX(-50%);
+    font-size: 150%; line-height: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,.4));
+  }
+
   .pop {
     position: absolute; z-index: 9; font-weight: 900; font-size: clamp(18px, 4vw, 30px);
     pointer-events: none; animation: floatUp .7s ease-out forwards; text-shadow: 0 2px 6px rgba(0,0,0,.5);
   }
   @keyframes floatUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-50px); opacity: 0; } }
 
-  /* Overlays */
   .overlay {
     position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; text-align: center; gap: 16px; padding: 24px;
-    background: rgba(8, 16, 40, .82); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; text-align: center; gap: 14px; padding: 24px;
+    background: rgba(8, 16, 40, .82); backdrop-filter: blur(4px); overflow-y: auto;
   }
   .overlay.hidden { display: none; }
   .overlay h2 { font-size: clamp(30px, 7vw, 56px); margin: 0; }
@@ -92,17 +105,27 @@
     box-shadow: 0 8px 0 #b88a00, 0 12px 24px rgba(0,0,0,.4); transition: transform .1s, box-shadow .1s;
   }
   .btn:active { transform: translateY(5px); box-shadow: 0 3px 0 #b88a00, 0 6px 14px rgba(0,0,0,.4); }
+  .btn.ghost {
+    background: rgba(255,255,255,.14); color: #fff; box-shadow: none;
+    border: 1px solid rgba(255,255,255,.3); font-size: clamp(14px, 2.4vw, 17px); padding: 11px 20px;
+  }
+  .btn.ghost:active { transform: translateY(2px); }
 
-  .legend { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
-  .legend .item { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 90px; font-size: 12px; opacity: .92; }
-  .legend svg { width: 46px; height: 46px; }
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; margin-top: 2px; }
+  .legend .item { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 92px; font-size: 12px; opacity: .92; }
+  .legend .thumb { width: 52px; height: 52px; display: flex; align-items: flex-end; justify-content: center; }
+  .legend .thumb svg { width: 46px; height: 46px; }
+  .legend .thumb .head { width: 48px; }
 
-  .hint { font-size: 13px; opacity: .65; }
+  .hint { font-size: 13px; opacity: .65; max-width: 520px; }
   #newBest { color: #4be38b; font-weight: 900; font-size: clamp(18px,3vw,24px); display: none; }
   #newBest.show { display: block; animation: pop2 .5s ease; }
   @keyframes pop2 { 0%{transform:scale(.5);opacity:0} 60%{transform:scale(1.15)} 100%{transform:scale(1);opacity:1} }
 
+  .row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; align-items: center; }
   .footer { margin-top: 14px; font-size: 12px; opacity: .5; }
+  #photoInput { display: none; }
+  .photo-ok { color: #4be38b; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -122,6 +145,8 @@
 
   <div class="footer">A loving gift from your sibling. ❤️ &nbsp;•&nbsp; Tip: combos multiply your points.</div>
 
+  <input type="file" id="photoInput" accept="image/*" />
+
   <!-- Start overlay -->
   <div class="overlay" id="startScreen">
     <h2>Whack-a-Isaac</h2>
@@ -129,6 +154,11 @@
     <div class="legend" id="legend"></div>
     <p class="hint">Click or tap the heads. Golden Isaac = jackpot. Mom = hands off.</p>
     <button class="btn" id="startBtn">Start Whacking 🔨</button>
+    <div class="row">
+      <button class="btn ghost" id="photoBtn">📷 Add Isaac's photo</button>
+      <button class="btn ghost" id="exportBtn">⬇️ Download ready-to-send file</button>
+    </div>
+    <p class="hint" id="photoStatus"></p>
   </div>
 
   <!-- Game over overlay -->
@@ -144,99 +174,89 @@
 (function () {
   "use strict";
 
-  // ---------- Critter art (inline SVG) ----------
+  // ===== Baked-in photo (filled when you click "Download ready-to-send file") =====
+  var BAKED_PHOTO = "";
+  // =================================================================================
+
+  // Resolve the active Isaac photo: baked in > saved locally > none (cartoon fallback)
+  var currentPhoto = BAKED_PHOTO || localStorage.getItem("whackIsaacPhoto") || "";
+
+  // ---------- Cartoon fallback faces (used only if no photo) ----------
   function isaacFace(opts) {
     opts = opts || {};
-    var skin = opts.skin || "#ffd9a8";
-    var hair = opts.hair || "#5a3a1d";
-    var shirt = opts.shirt || "#3a7bd5";
-    var extra = opts.extra || "";
-    return '' +
-    '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
-      // shirt/body
+    var skin = opts.skin || "#ffd9a8", hair = opts.hair || "#5a3a1d";
+    var shirt = opts.shirt || "#3a7bd5", extra = opts.extra || "";
+    return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
       '<path d="M22 100 Q22 78 50 76 Q78 78 78 100 Z" fill="' + shirt + '"/>' +
-      // neck
       '<rect x="42" y="64" width="16" height="14" rx="6" fill="' + skin + '"/>' +
-      // head
       '<circle cx="50" cy="44" r="28" fill="' + skin + '"/>' +
-      // ears
-      '<circle cx="23" cy="46" r="6" fill="' + skin + '"/>' +
-      '<circle cx="77" cy="46" r="6" fill="' + skin + '"/>' +
-      // hair
+      '<circle cx="23" cy="46" r="6" fill="' + skin + '"/><circle cx="77" cy="46" r="6" fill="' + skin + '"/>' +
       '<path d="M22 40 Q24 16 50 16 Q76 16 78 40 Q70 30 50 30 Q30 30 22 40 Z" fill="' + hair + '"/>' +
-      extra +
-    '</svg>';
+      extra + '</svg>';
+  }
+  var CARTOON = {
+    normal: isaacFace({ extra:
+      '<circle cx="40" cy="44" r="3.4" fill="#222"/><circle cx="60" cy="44" r="3.4" fill="#222"/>' +
+      '<path d="M40 56 Q50 64 60 56" stroke="#a3543a" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="34" cy="52" r="4" fill="#ff9b9b" opacity=".5"/><circle cx="66" cy="52" r="4" fill="#ff9b9b" opacity=".5"/>' }),
+    golden: isaacFace({ skin:"#ffe7a3", hair:"#caa200", shirt:"#caa200", extra:
+      '<circle cx="40" cy="44" r="3.4" fill="#222"/><circle cx="60" cy="44" r="3.4" fill="#222"/>' +
+      '<path d="M38 55 Q50 68 62 55" stroke="#a07b00" stroke-width="3.5" fill="none" stroke-linecap="round"/>' +
+      '<path d="M50 4 l3 7 7 1 -5 5 1 7 -6 -3 -6 3 1 -7 -5 -5 7 -1 Z" fill="#fff27a" stroke="#caa200" stroke-width="1.2"/>' })
+  };
+
+  // Mom is always the distinct cartoon (so "don't whack" is visually fair)
+  var MOM_SVG = isaacFace({ skin:"#ffd9a8", hair:"#8a4b9c", shirt:"#c0457a", extra:
+    '<path d="M20 44 Q16 20 50 16 Q84 20 80 44 L80 60 Q76 50 76 40 Q60 30 50 30 Q40 30 24 40 Q24 50 20 60 Z" fill="#8a4b9c"/>' +
+    '<circle cx="40" cy="45" r="3.4" fill="#222"/><circle cx="60" cy="45" r="3.4" fill="#222"/>' +
+    '<path d="M40 60 Q50 53 60 60" stroke="#a3543a" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+    '<circle cx="23" cy="54" r="2.6" fill="#ffd700"/><circle cx="77" cy="54" r="2.6" fill="#ffd700"/>' });
+
+  // Build the HTML for a given critter type using the current photo (or cartoon fallback)
+  function critterHTML(type) {
+    if (type === "mom") return MOM_SVG;
+    if (!currentPhoto) return CARTOON[type];
+    var gold = type === "golden";
+    return '<div class="head' + (gold ? ' gold' : '') + '">' +
+             '<div class="shirt" style="background:' + (gold ? '#caa200' : '#3a7bd5') + '"></div>' +
+             (gold ? '<div class="crown">👑</div>' : '') +
+             '<img class="pic" src="' + currentPhoto + '" alt="Isaac" draggable="false" />' +
+           '</div>';
   }
 
   var TYPES = {
-    normal: {
-      points: 1, weight: 70,
-      svg: isaacFace({ extra:
-        '<circle cx="40" cy="44" r="3.4" fill="#222"/>' +
-        '<circle cx="60" cy="44" r="3.4" fill="#222"/>' +
-        '<path d="M40 56 Q50 64 60 56" stroke="#a3543a" stroke-width="3" fill="none" stroke-linecap="round"/>' +
-        '<circle cx="34" cy="52" r="4" fill="#ff9b9b" opacity=".5"/>' +
-        '<circle cx="66" cy="52" r="4" fill="#ff9b9b" opacity=".5"/>'
-      })
-    },
-    golden: {
-      points: 5, weight: 12,
-      svg: isaacFace({ skin:"#ffe7a3", hair:"#caa200", shirt:"#caa200", extra:
-        '<circle cx="40" cy="44" r="3.4" fill="#222"/>' +
-        '<circle cx="60" cy="44" r="3.4" fill="#222"/>' +
-        '<path d="M38 55 Q50 68 62 55" stroke="#a07b00" stroke-width="3.5" fill="none" stroke-linecap="round"/>' +
-        '<path d="M50 4 l3 7 7 1 -5 5 1 7 -6 -3 -6 3 1 -7 -5 -5 7 -1 Z" fill="#fff27a" stroke="#caa200" stroke-width="1.2"/>'
-      })
-    },
-    mom: {
-      points: -3, weight: 18, isMom: true,
-      svg: isaacFace({ skin:"#ffd9a8", hair:"#8a4b9c", shirt:"#c0457a", extra:
-        // longer hair
-        '<path d="M20 44 Q16 20 50 16 Q84 20 80 44 L80 60 Q76 50 76 40 Q60 30 50 30 Q40 30 24 40 Q24 50 20 60 Z" fill="#8a4b9c"/>' +
-        '<circle cx="40" cy="45" r="3.4" fill="#222"/>' +
-        '<circle cx="60" cy="45" r="3.4" fill="#222"/>' +
-        // stern frown
-        '<path d="M40 60 Q50 53 60 60" stroke="#a3543a" stroke-width="3" fill="none" stroke-linecap="round"/>' +
-        // earrings + lips
-        '<circle cx="23" cy="54" r="2.6" fill="#ffd700"/>' +
-        '<circle cx="77" cy="54" r="2.6" fill="#ffd700"/>'
-      })
-    }
+    normal: { points: 1,  weight: 70 },
+    golden: { points: 5,  weight: 12 },
+    mom:    { points: -3, weight: 18, isMom: true }
   };
 
   // ---------- DOM ----------
   var board = document.getElementById("board");
-  var scoreEl = document.getElementById("score");
-  var comboEl = document.getElementById("combo");
-  var comboStat = document.getElementById("comboStat");
-  var timeEl = document.getElementById("time");
-  var bestEl = document.getElementById("best");
-  var timeBar = document.getElementById("timeBar");
-  var startScreen = document.getElementById("startScreen");
-  var overScreen = document.getElementById("overScreen");
-  var finalScoreEl = document.getElementById("finalScore");
-  var roastEl = document.getElementById("roast");
-  var overTitle = document.getElementById("overTitle");
-  var newBestEl = document.getElementById("newBest");
+  var scoreEl = document.getElementById("score"), comboEl = document.getElementById("combo");
+  var comboStat = document.getElementById("comboStat"), timeEl = document.getElementById("time");
+  var bestEl = document.getElementById("best"), timeBar = document.getElementById("timeBar");
+  var startScreen = document.getElementById("startScreen"), overScreen = document.getElementById("overScreen");
+  var finalScoreEl = document.getElementById("finalScore"), roastEl = document.getElementById("roast");
+  var overTitle = document.getElementById("overTitle"), newBestEl = document.getElementById("newBest");
+  var photoStatus = document.getElementById("photoStatus");
 
-  // Build legend
-  var legend = document.getElementById("legend");
-  [["normal","+1 Isaac"],["golden","+5 Golden"],["mom","–3 Mom!"]].forEach(function (pair) {
-    var d = document.createElement("div");
-    d.className = "item";
-    d.innerHTML = TYPES[pair[0]].svg + "<span>" + pair[1] + "</span>";
-    legend.appendChild(d);
-  });
+  function buildLegend() {
+    var legend = document.getElementById("legend");
+    legend.innerHTML = "";
+    [["normal","+1 Isaac"],["golden","+5 Golden"],["mom","–3 Mom!"]].forEach(function (pair) {
+      var d = document.createElement("div");
+      d.className = "item";
+      d.innerHTML = '<div class="thumb">' + critterHTML(pair[0]) + '</div><span>' + pair[1] + '</span>';
+      legend.appendChild(d);
+    });
+  }
 
   // Build 9 holes
   var HOLES = 9, holes = [];
   for (var i = 0; i < HOLES; i++) {
-    var h = document.createElement("div");
-    h.className = "hole";
-    var c = document.createElement("div");
-    c.className = "critter";
-    h.appendChild(c);
-    board.appendChild(h);
+    var h = document.createElement("div"); h.className = "hole";
+    var c = document.createElement("div"); c.className = "critter";
+    h.appendChild(c); board.appendChild(h);
     holes.push({ el: h, critter: c, active: false, type: null, idx: i });
     bindHole(holes[i]);
   }
@@ -248,18 +268,16 @@
       if (!actx) actx = new AC();
       if (actx.state === "suspended") actx.resume();
       var o = actx.createOscillator(), g = actx.createGain();
-      o.type = type || "square"; o.frequency.value = freq;
-      g.gain.value = vol || 0.06;
-      o.connect(g); g.connect(actx.destination);
-      o.start();
+      o.type = type || "square"; o.frequency.value = freq; g.gain.value = vol || 0.06;
+      o.connect(g); g.connect(actx.destination); o.start();
       g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + (dur || 0.1));
       o.stop(actx.currentTime + (dur || 0.1));
     } catch (e) {}
   }
-  function sndHit()   { tone(180, 0.08, "square", 0.09); setTimeout(function(){ tone(90,0.1,"triangle",0.08); }, 20); }
-  function sndGold()  { [660,880,1175].forEach(function(f,i){ setTimeout(function(){ tone(f,0.12,"triangle",0.07); }, i*70); }); }
-  function sndMom()   { tone(140, 0.3, "sawtooth", 0.09); }
-  function sndStart() { [523,659,784].forEach(function(f,i){ setTimeout(function(){ tone(f,0.12,"triangle",0.07); }, i*90); }); }
+  function sndHit()  { tone(180, 0.08, "square", 0.09); setTimeout(function(){ tone(90,0.1,"triangle",0.08); }, 20); }
+  function sndGold() { [660,880,1175].forEach(function(f,i){ setTimeout(function(){ tone(f,0.12,"triangle",0.07); }, i*70); }); }
+  function sndMom()  { tone(140, 0.3, "sawtooth", 0.09); }
+  function sndStart(){ [523,659,784].forEach(function(f,i){ setTimeout(function(){ tone(f,0.12,"triangle",0.07); }, i*90); }); }
 
   // ---------- Game state ----------
   var GAME_SECONDS = 30;
@@ -275,66 +293,45 @@
     for (k in TYPES) { r -= TYPES[k].weight; if (r <= 0) return k; }
     return "normal";
   }
-
   function freeHole() {
     var free = holes.filter(function (h) { return !h.active; });
-    if (!free.length) return null;
-    return free[Math.floor(Math.random() * free.length)];
+    return free.length ? free[Math.floor(Math.random() * free.length)] : null;
   }
-
   function spawn() {
     if (!running) return;
     var hole = freeHole();
     if (hole) {
       var typeKey = pickType();
-      hole.type = typeKey;
-      hole.active = true;
-      hole.whackable = true;
-      hole.critter.innerHTML = TYPES[typeKey].svg;
-      // force reflow so transition plays
+      hole.type = typeKey; hole.active = true; hole.whackable = true;
+      hole.critter.innerHTML = critterHTML(typeKey);
       void hole.critter.offsetWidth;
       hole.critter.classList.remove("whacked");
       hole.critter.classList.add("up");
-
-      // visible window shrinks as time runs out -> harder
       var progress = 1 - (timeLeft / GAME_SECONDS);
       var upTime = Math.max(650, 1500 - progress * 950);
       hole.timeout = setTimeout(function () { retract(hole); }, upTime);
     }
-    // schedule next spawn, faster over time + sometimes multiple up at once
     var progress2 = 1 - (timeLeft / GAME_SECONDS);
     var gap = Math.max(280, 820 - progress2 * 520);
     spawnTimer = setTimeout(spawn, gap + Math.random() * 220);
   }
-
   function retract(hole) {
-    clearTimeout(hole.timeout);
-    hole.whackable = false;
+    clearTimeout(hole.timeout); hole.whackable = false;
     hole.critter.classList.remove("up");
-    setTimeout(function () {
-      hole.active = false; hole.type = null;
-    }, 160);
+    setTimeout(function () { hole.active = false; hole.type = null; }, 160);
   }
-
   function bindHole(hole) {
     function hit(ev) {
       ev.preventDefault();
       if (!running || !hole.active || !hole.whackable) return;
       hole.whackable = false;
       var t = TYPES[hole.type];
-      hole.critter.classList.add("whacked");
-      hole.critter.classList.remove("up");
-
+      hole.critter.classList.add("whacked"); hole.critter.classList.remove("up");
       if (t.isMom) {
-        // penalty + combo reset
-        score = Math.max(0, score + t.points);
-        breakCombo();
-        sndMom();
+        score = Math.max(0, score + t.points); breakCombo(); sndMom();
         popText(hole, "MOM! " + t.points, "#ff6b6b");
       } else {
-        var gained = t.points * combo;
-        score += gained;
-        bumpCombo();
+        var gained = t.points * combo; score += gained; bumpCombo();
         if (hole.type === "golden") { sndGold(); popText(hole, "+" + gained + " ✨", "#ffe066"); }
         else { sndHit(); popText(hole, "+" + gained, "#fff"); }
       }
@@ -344,19 +341,12 @@
     hole.el.addEventListener("mousedown", hit);
     hole.el.addEventListener("touchstart", hit, { passive: false });
   }
-
   function bumpCombo() {
-    combo = Math.min(9, combo + 1);
-    comboEl.textContent = "x" + combo;
-    comboStat.classList.add("bump");
-    setTimeout(function () { comboStat.classList.remove("bump"); }, 130);
-    clearTimeout(comboTimer);
-    comboTimer = setTimeout(breakCombo, 1600); // must keep hitting to hold combo
+    combo = Math.min(9, combo + 1); comboEl.textContent = "x" + combo;
+    comboStat.classList.add("bump"); setTimeout(function () { comboStat.classList.remove("bump"); }, 130);
+    clearTimeout(comboTimer); comboTimer = setTimeout(breakCombo, 1600);
   }
-  function breakCombo() {
-    combo = 1; comboEl.textContent = "x1"; clearTimeout(comboTimer);
-  }
-
+  function breakCombo() { combo = 1; comboEl.textContent = "x1"; clearTimeout(comboTimer); }
   function popText(hole, txt, color) {
     var r = hole.el.getBoundingClientRect();
     var p = document.createElement("div");
@@ -367,45 +357,33 @@
     setTimeout(function () { p.remove(); }, 700);
   }
 
-  // ---------- Loop control ----------
   function startGame() {
     score = 0; combo = 1; timeLeft = GAME_SECONDS; running = true;
     scoreEl.textContent = "0"; comboEl.textContent = "x1";
     timeEl.textContent = timeLeft; timeBar.style.width = "100%";
-    startScreen.classList.add("hidden");
-    overScreen.classList.add("hidden");
-    sndStart();
-
-    spawn();
+    startScreen.classList.add("hidden"); overScreen.classList.add("hidden");
+    sndStart(); spawn();
     tickTimer = setInterval(function () {
-      timeLeft--;
-      timeEl.textContent = Math.max(0, timeLeft);
+      timeLeft--; timeEl.textContent = Math.max(0, timeLeft);
       timeBar.style.width = (Math.max(0, timeLeft) / GAME_SECONDS * 100) + "%";
       if (timeLeft <= 5 && timeLeft > 0) tone(880, 0.07, "sine", 0.05);
       if (timeLeft <= 0) endGame();
     }, 1000);
   }
-
   function endGame() {
     running = false;
     clearTimeout(spawnTimer); clearInterval(tickTimer); clearTimeout(comboTimer);
     holes.forEach(function (h) { clearTimeout(h.timeout); h.critter.classList.remove("up"); h.active = false; });
-
     finalScoreEl.textContent = score;
     var isBest = score > best;
     if (isBest) { best = score; localStorage.setItem("whackIsaacBest", best); bestEl.textContent = best; }
     newBestEl.classList.toggle("show", isBest);
-
     overTitle.textContent = isBest ? "🏆 New Record!" : "⏱️ Time's up!";
     roastEl.textContent = roastFor(score);
-
-    // sad/triumph jingle
     if (isBest) { [659,784,988,1318].forEach(function(f,i){ setTimeout(function(){ tone(f,0.16,"triangle",0.07); }, i*130); }); }
     else { [392,330,262].forEach(function(f,i){ setTimeout(function(){ tone(f,0.18,"sine",0.06); }, i*150); }); }
-
     overScreen.classList.remove("hidden");
   }
-
   function roastFor(s) {
     if (s <= 0) return "Isaac… you scored ZERO. The hammer was right there. Were your eyes closed?";
     if (s < 15) return "Rough start, Isaac. Even the moles felt bad for you.";
@@ -416,10 +394,62 @@
   }
 
   document.getElementById("startBtn").addEventListener("click", startGame);
-  document.getElementById("againBtn").addEventListener("click", startGame);
+  document.getElementById("againBtn").addEventListener("click", function () {
+    overScreen.classList.add("hidden"); startScreen.classList.remove("hidden");
+  });
 
-  // prevent page scroll on touch within board
+  // ---------- Photo loading + downscale ----------
+  var photoInput = document.getElementById("photoInput");
+  document.getElementById("photoBtn").addEventListener("click", function () { photoInput.click(); });
+  photoInput.addEventListener("change", function () {
+    var file = photoInput.files && photoInput.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      var img = new Image();
+      img.onload = function () {
+        // center-crop to square, downscale to 256px, export as JPEG to keep it small
+        var size = 256, cv = document.createElement("canvas");
+        cv.width = size; cv.height = size;
+        var ctx = cv.getContext("2d");
+        var side = Math.min(img.width, img.height);
+        var sx = (img.width - side) / 2, sy = (img.height - side) / 2;
+        ctx.drawImage(img, sx, sy, side, side, 0, 0, size, size);
+        currentPhoto = cv.toDataURL("image/jpeg", 0.85);
+        try { localStorage.setItem("whackIsaacPhoto", currentPhoto); } catch (e2) {}
+        buildLegend();
+        photoStatus.innerHTML = '<span class="photo-ok">✓ Photo loaded!</span> Now click “Download ready-to-send file” to bake it in.';
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // ---------- Export a single self-contained file with the photo baked in ----------
+  document.getElementById("exportBtn").addEventListener("click", function () {
+    if (!currentPhoto) {
+      photoStatus.innerHTML = "Add Isaac's photo first 👆 (or send this file as-is for the cartoon version).";
+      return;
+    }
+    var html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+    // inject the photo into the BAKED_PHOTO constant of the exported copy
+    html = html.replace(/var BAKED_PHOTO = "[^"]*";/, "var BAKED_PHOTO = " + JSON.stringify(currentPhoto) + ";");
+    var blob = new Blob([html], { type: "text/html" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "WhackAIsaac-ready.html";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    photoStatus.innerHTML = '<span class="photo-ok">✓ Downloaded “WhackAIsaac-ready.html”</span> — send THAT file to Isaac.';
+  });
+
   board.addEventListener("touchmove", function (e) { e.preventDefault(); }, { passive: false });
+
+  // Init
+  buildLegend();
+  if (currentPhoto && BAKED_PHOTO) {
+    photoStatus.textContent = "Isaac's face is loaded and ready. 😈";
+  }
 })();
 </script>
 </body>
