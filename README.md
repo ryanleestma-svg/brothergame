@@ -1,28 +1,38 @@
-# 🎉 Isaac's $1,000,000 Prize Claim
+# 🔨 Whack-a-Isaac
 
-A harmless browser prank game built to mess with Isaac.
+A real, replayable arcade game — with Isaac as the mole. Built to send to your brother.
 
 ## How to use it
 
-1. Send your brother **`IsaacsPrize.html`** (text it, email it, AirDrop it, etc.).
-2. He double-clicks the file — it opens in any web browser. No install, no internet needed.
-3. Watch the chaos.
+1. Send your brother **`WhackAIsaac.html`** (text, email, AirDrop — whatever).
+2. He double-clicks it. It opens in any web browser. No install, no internet needed.
+3. He gets hooked and (gently) roasted.
 
-## What happens
+## How to play
 
-1. **The bait** — A flashy screen tells Isaac he's won **$1,000,000**. All he has to do is click the big gold button.
-2. **The chase** — The button *runs away* from his cursor and taunts him personally. It gets a little easier each time, so he never quite gives up.
-3. **The fake-out** — After ~12 dodges the button "gives up." He clicks it, a loading bar crawls to 99%, then stalls with goofy fake error popups.
-4. **The reveal** — Confetti, a giant **PRANKED!** banner, and the bad news that there was never any money. There's a button to make him chase it all over again.
+Isaac heads pop out of holes — **click or tap them** to score. You get **30 seconds**.
 
-Works on desktop (mouse) and mobile/tablet (touch). Everything is self-contained in one file — no tracking, no external code, no actual harm.
+| Pop-up | Worth |
+| --- | --- |
+| 🙂 **Isaac** | +1 |
+| ✨ **Golden Isaac** | +5 (rare!) |
+| 😠 **Mom** | **–3** — do NOT whack Mom |
+
+- **Combo multiplier:** keep landing hits quickly to build `x2`, `x3`… up to `x9`. Pause too long and it resets.
+- **It speeds up:** heads pop faster and stay visible for less time as the clock runs down.
+- **High score** is saved on his device, so there's always one more run.
+- The **game-over screen roasts him** based on his score.
+- Full **sound effects** (whacks, jingles) — no external files.
+
+Works on desktop (mouse) and phones/tablets (touch).
 
 ## Want to tweak it?
 
-Open `IsaacsPrize.html` in a text editor:
+Open `WhackAIsaac.html` in any text editor:
 
-- **`DODGES_TO_WIN`** (near the top of the `<script>`) — how many dodges before the button surrenders.
-- **`taunts`** array — add your own insults.
-- The reveal text lives in the `doReveal()` function.
+- **`GAME_SECONDS`** — round length.
+- **`TYPES`** — point values, spawn weights, and the SVG faces. Add your own characters.
+- **`roastFor()`** — the game-over insults, keyed by score.
+- **`isaacFace()`** — tweak skin/hair/shirt colors to make the moles actually look like Isaac.
 
-Enjoy. 😈
+Enjoy. 🔨
