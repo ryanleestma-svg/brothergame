@@ -1,3 +1,11 @@
+## 🏦 Lender Tracker
+
+This repo also contains **`LenderTracker.html`** — a shared tracker for chasing down lenders for a
+$20–50M lending package (built for a small team and ~200 lenders, with daily task checklists).
+See **[LENDER-TRACKER-SETUP.md](LENDER-TRACKER-SETUP.md)** for the ~3-minute setup.
+
+---
+
 # 🔨 Whack-a-Isaac
 
 A real, replayable arcade game — with Isaac as the mole. Built to send to your brother.
